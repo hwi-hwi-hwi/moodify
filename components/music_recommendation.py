@@ -1,10 +1,10 @@
 # 음악 추천 코드
 def recommend_music(emotion):
     mock_music_data = {
-        'happy': ['Song 1', 'Song 2'],
-        'sad': ['Song 3', 'Song 4'],
-        'neutral': ['Song 5', 'Song 6'],
-        'angry': ['Song 7', 'Song 8'],
-        'surprised': ['Song 9', 'Song 10']
+        'Happy': ['Happy Song 1', 'Happy Song 2'],
+        'Sad': ['Sad Song 1', 'Sad Song 2'],
+        'Neutral': ['Neutral Song 1', 'Neutral Song 2'],
+        'Angry': ['Angry Song 1', 'Angry Song 2'],
+        'Surprising': ['Surprising Song 1', 'Surprising Song 2']
     }
     return mock_music_data.get(emotion, [])
