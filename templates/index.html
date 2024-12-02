@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Emotion Detection</title>
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        #emotion-display {
+            font-size: 18px;
+            margin-top: 20px;
+            display: none; /* 초기 상태에서 숨김 */
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Emotion Detection</h1>
+    <button onclick="startDetection()">Start Emotion Detection</button>
+    <p id="emotion-display"></p> <!-- 초기에는 숨김 상태 -->
+
+    <script>
+        const socket = io();
+
+        // 실시간 감정 분석 업데이트 처리
+        socket.on("emotion_update", (data) => {
+            const emotionDisplay = document.getElementById("emotion-display");
+            emotionDisplay.style.display = "block"; // 감정 데이터 수신 시 표시
+            if (data.emotion && data.confidence !== undefined) {
+                emotionDisplay.innerText =
+                    `Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+            } else {
+                emotionDisplay.innerText = "Emotion: Analyzing...";
+            }
+        });
+
+        // 감정 분석 시작
+        function startDetection() {
+            const emotionDisplay = document.getElementById("emotion-display");
+            emotionDisplay.style.display = "none"; // 새로 시작 시 숨김
+            socket.emit("start_detection");
+        }
+    </script>
+</body>
+</html>

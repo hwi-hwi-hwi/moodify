@@ -1,21 +1,29 @@
-from flask import Flask, request, jsonify
-from components.face_detection import detect_emotion
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+from threading import Thread, Event
+from components.face_detection_live import detect_emotion_live
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-@app.route('/detect-emotion', methods=['POST'])
-def detect_emotion_route():
-    """
-    업로드된 이미지에서 감정을 감지하여 반환하는 API 엔드포인트.
-    """
-    # 업로드된 이미지 가져오기
-    image = request.files.get('image')
-    if not image:
-        return jsonify({"error": "No image provided"}), 400
+# 이벤트 상태 관리
+thread = None
+thread_stop_event = Event()
 
-    # 감정 분석
-    result = detect_emotion(image)
-    return jsonify(result)
+@app.route("/")
+def index():
+    return render_template("index.html")
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# WebSocket 이벤트 핸들러
+@socketio.on("start_detection")
+def handle_emotion_detection():
+    global thread, thread_stop_event
+    if thread is None or not thread.is_alive():
+        thread_stop_event.clear()
+        thread = Thread(target=detect_emotion_live, args=(socketio,))
+        thread.start()
+    else:
+        emit("status", {"message": "Detection already running."})
+
+if __name__ == "__main__":
+    socketio.run(app, debug=True)
