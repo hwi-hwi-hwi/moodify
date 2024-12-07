@@ -3,41 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Emotion Detection</title>
+    <title>Moodify - Real-Time Emotion Detection</title>
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <style>
+        /* 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            transition: background-color 0.5s ease-in-out;
+        }
+        header {
+            background-color: #1DB954; /* Spotify Green */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            animation: fade-in 2s;
+        }
+        header p {
+            font-size: 1.2em;
+            margin: 10px 0 0;
+        }
+        main {
+            margin: 20px;
+            text-align: center;
+        }
+        footer {
+            background-color: #f1f1f1;
+            color: #555;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
         #live-emotion-display, #final-result {
             font-size: 18px;
             margin-top: 20px;
             border: 1px solid #ddd;
             padding: 10px;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             width: fit-content;
             display: none;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slide-in 1s;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
-            background-color: #007BFF;
+            background-color: #1DB954; /* Spotify Green */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            animation: bounce 1.5s infinite alternate;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #1aa34a; /* Darker Spotify Green */
+            transform: scale(1.05);
+        }
+
+        /* 애니메이션 */
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slide-in {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
     </style>
 </head>
 <body>
-    <h1>Real-Time Emotion Detection</h1>
-    <button onclick="startDetection()">Start Emotion Detection</button>
-    <p id="live-emotion-display">Emotion Analysis in Progress...</p>
-    <p id="final-result"></p>
+    <header>
+        <h1>Moodify</h1>
+        <p>Real-Time Emotion Detection</p>
+        <p>Analyze emotions in real-time using your webcam!</p>
+    </header>
+    <main>
+        <button onclick="startDetection()">Start Emotion Detection</button>
+        <p id="live-emotion-display">Emotion Analysis in Progress...</p>
+        <p id="final-result"></p>
+    </main>
+    <footer>
+        <p>&copy; 2024 Moodify Project by Seonghwi Kim</p>
+    </footer>
 
     <script>
         const socket = io();
+
+        // 감정별 배경색 변경
+        const emotionColors = {
+            happy: "#ffeb3b",     // 노란색
+            sad: "#2196f3",       // 파란색
+            angry: "#f44336",     // 빨간색
+            disgust: "#9c27b0",   // 보라색
+            scared: "#607d8b",    // 회색
+            surprised: "#ff9800", // 주황색
+            neutral: "#9e9e9e"    // 밝은 회색
+        };
 
         // 실시간 감정 업데이트 처리
         socket.on("emotion_update", (data) => {
@@ -45,8 +121,12 @@
             liveEmotionDisplay.style.display = "block";
             if (data.emotion && !isNaN(data.confidence)) {
                 liveEmotionDisplay.innerText = `Live Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+                if (emotionColors[data.emotion]) {
+                    document.body.style.backgroundColor = emotionColors[data.emotion];
+                }
             } else {
                 liveEmotionDisplay.innerText = "Live Emotion: Analyzing...";
+                document.body.style.backgroundColor = "#f0f2f5"; // 기본 배경
             }
         });
 
@@ -56,6 +136,9 @@
             finalResultDisplay.style.display = "block";
             if (data.emotion && !isNaN(data.confidence)) {
                 finalResultDisplay.innerHTML = `<strong>Emotion Detected:</strong> ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+                if (emotionColors[data.emotion]) {
+                    document.body.style.backgroundColor = emotionColors[data.emotion];
+                }
             } else {
                 finalResultDisplay.innerHTML = `<strong>Emotion Detected:</strong> Error in confidence data.`;
             }
@@ -69,6 +152,7 @@
             liveEmotionDisplay.innerText = "Emotion Analysis in Progress...";
             finalResultDisplay.style.display = "none";
             finalResultDisplay.innerHTML = "";
+            document.body.style.backgroundColor = "#f0f2f5"; // 초기화
             socket.emit("start_detection");
         }
     </script>
