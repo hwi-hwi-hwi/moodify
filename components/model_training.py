@@ -75,6 +75,6 @@ if __name__ == "__main__":
     )
 
     # 모델 저장
-    model_save_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'emotion_model.h5')
+    model_save_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'emotion_model.keras')
     model.save(model_save_path)
     print(f"모델 저장 완료: {model_save_path}")
