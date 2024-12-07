@@ -6,37 +6,69 @@
     <title>Real-Time Emotion Detection</title>
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <style>
-        #emotion-display {
+        #live-emotion-display, #final-result {
             font-size: 18px;
             margin-top: 20px;
-            display: none; /* 초기 상태에서 숨김 */
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            width: fit-content;
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
     <h1>Real-Time Emotion Detection</h1>
     <button onclick="startDetection()">Start Emotion Detection</button>
-    <p id="emotion-display"></p> <!-- 초기에는 숨김 상태 -->
+    <p id="live-emotion-display">Emotion Analysis in Progress...</p>
+    <p id="final-result"></p>
 
     <script>
         const socket = io();
 
-        // 실시간 감정 분석 업데이트 처리
+        // 실시간 감정 업데이트 처리
         socket.on("emotion_update", (data) => {
-            const emotionDisplay = document.getElementById("emotion-display");
-            emotionDisplay.style.display = "block"; // 감정 데이터 수신 시 표시
-            if (data.emotion && data.confidence !== undefined) {
-                emotionDisplay.innerText =
-                    `Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+            const liveEmotionDisplay = document.getElementById("live-emotion-display");
+            liveEmotionDisplay.style.display = "block";
+            if (data.emotion && !isNaN(data.confidence)) {
+                liveEmotionDisplay.innerText = `Live Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
             } else {
-                emotionDisplay.innerText = "Emotion: Analyzing...";
+                liveEmotionDisplay.innerText = "Live Emotion: Analyzing...";
+            }
+        });
+
+        // 최종 감정 결과 표시
+        socket.on("final_emotion", (data) => {
+            const finalResultDisplay = document.getElementById("final-result");
+            finalResultDisplay.style.display = "block";
+            if (data.emotion && !isNaN(data.confidence)) {
+                finalResultDisplay.innerHTML = `<strong>Emotion Detected:</strong> ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+            } else {
+                finalResultDisplay.innerHTML = `<strong>Emotion Detected:</strong> Error in confidence data.`;
             }
         });
 
         // 감정 분석 시작
         function startDetection() {
-            const emotionDisplay = document.getElementById("emotion-display");
-            emotionDisplay.style.display = "none"; // 새로 시작 시 숨김
+            const liveEmotionDisplay = document.getElementById("live-emotion-display");
+            const finalResultDisplay = document.getElementById("final-result");
+            liveEmotionDisplay.style.display = "none";
+            liveEmotionDisplay.innerText = "Emotion Analysis in Progress...";
+            finalResultDisplay.style.display = "none";
+            finalResultDisplay.innerHTML = "";
             socket.emit("start_detection");
         }
     </script>

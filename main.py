@@ -36,5 +36,11 @@ def handle_emotion_detection():
     else:
         emit("status", {"message": "Detection already running."})
 
+@socketio.on("stop_detection")
+def stop_emotion_detection():
+    global thread_stop_event
+    thread_stop_event.set()
+    emit("status", {"message": "Detection stopped."})
+
 if __name__ == "__main__":
     socketio.run(app, debug=True)

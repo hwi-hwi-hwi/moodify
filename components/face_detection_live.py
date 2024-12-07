@@ -2,7 +2,12 @@ import cv2
 import numpy as np
 from keras.models import load_model
 import time
-from flask_socketio import SocketIO
+from collections import Counter
+import platform
+
+if platform.system() == "Windows":
+    import win32gui
+    import win32con
 
 # 모델 및 설정
 face_detection_model_path = 'haarcascade_files/haarcascade_frontalface_default.xml'
@@ -13,70 +18,91 @@ EMOTIONS = ["angry", "disgust", "scared", "happy", "sad", "surprised", "neutral"
 face_detection = cv2.CascadeClassifier(face_detection_model_path)
 emotion_classifier = load_model(emotion_model_path, compile=False)
 
-# 웹캠 설정
-camera = cv2.VideoCapture(0)
-socketio = SocketIO()
+def set_window_topmost(window_name):
+    """창을 항상 위로 설정"""
+    if platform.system() == "Windows":
+        hwnd = win32gui.FindWindow(None, window_name)
+        if hwnd:
+            win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, 0, 0, 0, 0,
+                                  win32con.SWP_NOMOVE | win32con.SWP_NOSIZE | win32con.SWP_SHOWWINDOW)
 
 def detect_emotion_live(socketio_instance):
-    last_update_time = time.time()
-    update_interval = 1.0
-    last_emotion = "N/A"
-    last_confidence = 0.0
+    cap = cv2.VideoCapture(0)
+    window_name = "Emotion Detection"
+    cv2.namedWindow(window_name, cv2.WND_PROP_TOPMOST)
+    cv2.setWindowProperty(window_name, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_NORMAL)
 
-    while True:
-        ret, frame = camera.read()
+    detection_results = []
+    start_detection = False
+    detection_start_time = None
+
+    while cap.isOpened():
+        ret, frame = cap.read()
         if not ret:
-            print("Failed to grab frame.")
-            continue
+            print("Error: Unable to access the webcam.")
+            break
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_detection.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-        current_time = time.time()
+        # 창을 항상 위로 설정
+        set_window_topmost(window_name)
 
-        if len(faces) > 0 and (current_time - last_update_time > update_interval):
-            (x, y, w, h) = faces[0]
-            roi = gray[y:y+h, x:x+w]
-            roi = cv2.resize(roi, (64, 64))
-            roi = roi.astype("float") / 255.0
-            roi = np.expand_dims(roi, axis=-1)
-            roi = np.expand_dims(roi, axis=0)
+        # 초기 메시지 출력
+        if not start_detection:
+            cv2.putText(frame, "Press 'S' to start emotion detection", (10, 30),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            cv2.putText(frame, "Press 'Q' to quit", (10, 60),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
 
-            preds = emotion_classifier.predict(roi)[0]
-            sad_index = EMOTIONS.index("sad")
-            sad_probability = preds[sad_index]
-            print(f"Sad Probability: {sad_probability}")  # 디버깅용 출력
+        # 감정 분석 시작
+        if start_detection:
+            elapsed_time = time.time() - detection_start_time
+            if elapsed_time < 5:  # 5초 동안 감정 분석
+                for (x, y, w, h) in faces:
+                    face = gray[y:y+h, x:x+w]
+                    face = cv2.resize(face, (64, 64))
+                    face = face.astype("float") / 255.0
+                    face = np.expand_dims(face, axis=-1)
+                    face = np.expand_dims(face, axis=0)
 
-            # Sad 감정 강조 로직
-            if sad_probability > 0.2:
-                current_emotion = "sad"
-            elif abs(sad_probability - max(preds)) < 0.1:
-                current_emotion = "sad"
+                    predictions = emotion_classifier.predict(face)[0]
+                    emotion = EMOTIONS[np.argmax(predictions)]
+                    confidence = np.max(predictions)
+
+                    detection_results.append({"emotion": emotion, "confidence": confidence})
+
+                    # 실시간 감정 업데이트
+                    socketio_instance.emit("emotion_update", {
+                        "emotion": emotion,
+                        "confidence": float(confidence)
+                    })
             else:
-                current_emotion = EMOTIONS[np.argmax(preds)]
+                # 최종 감정 결과 계산
+                start_detection = False
+                most_common_emotion = Counter([res["emotion"] for res in detection_results]).most_common(1)[0][0]
+                avg_confidence = np.mean([res["confidence"] for res in detection_results if res["emotion"] == most_common_emotion])
 
-            current_confidence = np.max(preds)
-            last_emotion = current_emotion
-            last_confidence = current_confidence
-            last_update_time = current_time
+                socketio_instance.emit("final_emotion", {
+                    "emotion": most_common_emotion,
+                    "confidence": float(avg_confidence)
+                })
+                detection_results = []
 
-            socketio_instance.emit("emotion_update", {
-                "emotion": last_emotion,
-                "confidence": float(last_confidence)
-            })
-
-        frame_height, frame_width = frame.shape[:2]
-        text_position = (frame_width - 200, 30)
-        cv2.putText(frame, "Press 'Q' to quit.", text_position, cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-
+        # 얼굴에 사각형 그리기
         for (x, y, w, h) in faces:
             cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
-        cv2.imshow("Real-Time Emotion Detection", frame)
+        # 영상 출력
+        cv2.imshow(window_name, frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            print("Exiting... Pressed 'Q'")
+        # 키보드 입력 처리
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('q'):  # Q를 눌러 종료
             break
+        elif key == ord('s') and not start_detection:  # S를 눌러 감정 분석 시작
+            start_detection = True
+            detection_start_time = time.time()
 
-    camera.release()
+    cap.release()
     cv2.destroyAllWindows()
