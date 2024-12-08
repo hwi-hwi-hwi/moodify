@@ -58,7 +58,12 @@ def detect_emotion_live(socketio_instance):
         # 감정 분석 시작
         if start_detection:
             elapsed_time = time.time() - detection_start_time
-            if elapsed_time < 5:  # 5초 동안 감정 분석
+
+            if elapsed_time <= 5:  # 5초 동안 감정 분석
+                countdown = 5 - int(elapsed_time)  # 카운트다운 계산
+                cv2.putText(frame, f"Look at the camera for {countdown} seconds", (10, 90),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+
                 for (x, y, w, h) in faces:
                     face = gray[y:y+h, x:x+w]
                     face = cv2.resize(face, (64, 64))
@@ -78,7 +83,7 @@ def detect_emotion_live(socketio_instance):
                         "confidence": float(confidence)
                     })
             else:
-                # 최종 감정 결과 계산
+                # 최종 감정 결과 계산 및 표시
                 start_detection = False
                 most_common_emotion = Counter([res["emotion"] for res in detection_results]).most_common(1)[0][0]
                 avg_confidence = np.mean([res["confidence"] for res in detection_results if res["emotion"] == most_common_emotion])
@@ -87,7 +92,12 @@ def detect_emotion_live(socketio_instance):
                     "emotion": most_common_emotion,
                     "confidence": float(avg_confidence)
                 })
-                detection_results = []
+
+                # 최종 결과 메시지 표시
+                cv2.putText(frame, "Emotion Detection Completed", (10, 90),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv2.imshow(window_name, frame)  # 메시지 보여주기
+                break  # 웹캠 창 종료
 
         # 얼굴에 사각형 그리기
         for (x, y, w, h) in faces:
