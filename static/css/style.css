@@ -1,0 +1,88 @@
+/* 기본 스타일 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    transition: background-color 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+header {
+    background-color: #1DB954; /* Spotify Green */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    animation: fade-in 2s;
+}
+header p {
+    font-size: 1.2em;
+    margin: 10px 0 0;
+}
+main {
+    flex: 1;
+    margin: 20px;
+    text-align: center;
+}
+.chart-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 30px;
+}
+canvas {
+    width: 600px;
+    height: 450px;
+}
+footer {
+    background-color: #f1f1f1;
+    color: #555;
+    text-align: center;
+    padding: 10px;
+}
+#live-emotion-display, #final-result {
+    font-size: 18px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #1DB954; /* Spotify Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    animation: bounce 1.5s infinite alternate;
+}
+button:hover {
+    background-color: #1aa34a;
+    transform: scale(1.05);
+}
+
+/* 애니메이션 */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slide-in {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
