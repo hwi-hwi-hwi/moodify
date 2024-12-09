@@ -2,13 +2,24 @@ const socket = io();
 
 // 감정별 배경색
 const emotionColors = {
-    happy: "#ffeb3b",
+    happy: "#ffeb3b", // 기본 배경색
     sad: "#2196f3",
     angry: "#f44336",
     disgust: "#9c27b0",
     scared: "#607d8b",
     surprised: "#ff9800",
     neutral: "#9e9e9e"
+};
+
+// 그래프 막대 색상 조정 (배경과 대비되도록 밝기/채도 변경)
+const adjustedEmotionColors = {
+    happy: "#ffcc00", // 더 진한 노란색
+    sad: "#1565c0",   // 더 어두운 파란색
+    angry: "#d32f2f", // 더 어두운 빨간색
+    disgust: "#7b1fa2", // 더 어두운 보라색
+    scared: "#455a64", // 더 어두운 회색
+    surprised: "#e65100", // 더 진한 주황색
+    neutral: "#616161"   // 더 어두운 중립색
 };
 
 // 그래프 초기화 설정
@@ -32,7 +43,19 @@ const confidenceChart = new Chart(ctxConfidence, {
         datasets: [{
             label: "Emotion Confidence (%)",
             data: [0, 0, 0, 0, 0, 0, 0],
-            backgroundColor: ["#f44336", "#9c27b0", "#607d8b", "#ffeb3b", "#2196f3", "#ff9800", "#9e9e9e"]
+            backgroundColor: [
+                adjustedEmotionColors.angry,
+                adjustedEmotionColors.disgust,
+                adjustedEmotionColors.scared,
+                adjustedEmotionColors.happy,
+                adjustedEmotionColors.sad,
+                adjustedEmotionColors.surprised,
+                adjustedEmotionColors.neutral
+            ],
+            borderColor: [
+                "#000", "#000", "#000", "#000", "#000", "#000", "#000" // 모든 막대에 검은색 테두리 추가
+            ],
+            borderWidth: 2 // 테두리 두께
         }]
     },
     options: chartOptions
@@ -47,7 +70,19 @@ const frequencyChart = new Chart(ctxFrequency, {
         datasets: [{
             label: "Emotion Frequency",
             data: [0, 0, 0, 0, 0, 0, 0],
-            backgroundColor: ["#f44336", "#9c27b0", "#607d8b", "#ffeb3b", "#2196f3", "#ff9800", "#9e9e9e"]
+            backgroundColor: [
+                adjustedEmotionColors.angry,
+                adjustedEmotionColors.disgust,
+                adjustedEmotionColors.scared,
+                adjustedEmotionColors.happy,
+                adjustedEmotionColors.sad,
+                adjustedEmotionColors.surprised,
+                adjustedEmotionColors.neutral
+            ],
+            borderColor: [
+                "#000", "#000", "#000", "#000", "#000", "#000", "#000" // 모든 막대에 검은색 테두리 추가
+            ],
+            borderWidth: 2 // 테두리 두께
         }]
     },
     options: chartOptions
