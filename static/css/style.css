@@ -86,3 +86,29 @@ button:hover {
     from { transform: translateY(0); }
     to { transform: translateY(-10px); }
 }
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    button {
+        width: 100%;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    header p {
+        font-size: 1em;
+    }
+    .chart-container {
+        flex-direction: column;
+    }
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+    #live-emotion-display, #final-result {
+        width: 90%;
+    }
+}
