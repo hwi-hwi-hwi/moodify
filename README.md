@@ -1,4 +1,4 @@
-# Moodify 🎵 - Real-Time Emotion Detection & Music Recommendation System
+![training_validation_plot3](https://github.com/user-attachments/assets/69113ac8-a69e-4c08-a7a2-8fb990bd73b5)# Moodify 🎵 - Real-Time Emotion Detection & Music Recommendation System
 
 "Moodify"는 사용자의 감정(Mood)을 분석하고, 그에 맞는 음악이나 플레이리스트를 추천하는 시스템입니다.  
 이름은 "Mood"와 "-ify"의 결합으로, 감정을 음악으로 변환한다는 의미를 담고 있습니다.  
@@ -72,8 +72,22 @@ def create_emotion_model(input_shape=(48, 48, 1), num_classes=7):
 
 #### 학습 및 개선
 - **데이터 증강**: 이미지 회전, 이동, 확대, 뒤집기 적용.
-- **클래스 불균형 처리**: class_weight 매개변수 사용.
-- **평가 및 분석**: Confusion Matrix와 Classification Report로 성능 평가.
+- **클래스 불균형 처리**: `class_weight` 매개변수 사용.
+- **평가 및 분석**:
+  - Confusion Matrix와 Classification Report로 각 감정 클래스에 대한 예측 정확도를 평가.
+  - 아래 그래프는 모델 학습 동안의 훈련 정확도와 손실, 검증 정확도와 손실을 시각적으로 나타냅니다.
+
+#### 모델 학습 성능 그래프:
+![training_validation_plot3](https://github.com/user-attachments/assets/585147f1-c914-4f45-a87f-c70587a989a1)
+
+- **Training vs Validation Accuracy**:
+  - 그래프의 푸른 선은 훈련 데이터의 정확도(Training Accuracy)를 나타내고, 주황색 선은 검증 데이터의 정확도(Validation Accuracy)를 나타냅니다.
+  - Epoch(학습 횟수)가 증가함에 따라 두 정확도가 점차 상승하고 수렴하는 모습을 보여줍니다.
+  - 이는 모델이 안정적으로 학습되었음을 나타냅니다.
+
+- **Training vs Validation Loss**:
+  - 그래프의 푸른 선은 훈련 데이터의 손실(Training Loss)을 나타내고, 주황색 선은 검증 데이터의 손실(Validation Loss)을 나타냅니다.
+  - Epoch가 진행될수록 손실 값이 감소하며 안정적인 모델 학습이 이루어졌음을 확인할 수 있습니다.
 
 ### 2️⃣ 기능 개발
 
@@ -137,17 +151,24 @@ Enter를 눌러 다양한 디바이스에서 Moodify의 작동을 확인.
 
 1. 첫 화면
 ![1  첫 화면](https://github.com/user-attachments/assets/ee52c7af-9965-4dee-b5d1-fdd3a9ca6011)
-2. 카메라![2  qjxms snfmaus](https://github.com/user-attachments/assets/0e3c77a2-6bf6-4acf-b6ff-7f1913b5b356)
-3. 카메라 보기![3, 카메라 보기](https://github.com/user-attachments/assets/bc2ba445-76c0-4328-a615-d2659259ea2f)
-4. 결과 분석 및 노래 추천 그리고 노래 재생![4  결과 분석 및 노래 추천 그리고 노래 재생](https://github.com/user-attachments/assets/8d51765f-1c44-4443-af64-eae4cb30a406)
+2. 카메라
+![2  qjxms snfmaus](https://github.com/user-attachments/assets/0e3c77a2-6bf6-4acf-b6ff-7f1913b5b356)
+3. 카메라 보기
+![3, 카메라 보기](https://github.com/user-attachments/assets/bc2ba445-76c0-4328-a615-d2659259ea2f)
+4. 결과 분석 및 노래 추천 그리고 노래 재생
+![4  결과 분석 및 노래 추천 그리고 노래 재생](https://github.com/user-attachments/assets/8d51765f-1c44-4443-af64-eae4cb30a406)
 
 ## 📱 모바일 환경 지원
 Moodify는 반응형 디자인을 채택하여 모바일 환경에서도 완벽하게 작동하도록 설계되었습니다.  
 모바일 브라우저에서 감정 분석과 음악 추천 기능을 손쉽게 사용할 수 있습니다.
-1. 모바일 첫 화면![5  모바일 첫 화면](https://github.com/user-attachments/assets/d27d1e8a-14f1-4f64-96c6-deb08ebfc5be)
-2. 모바일 카메라![6  모바일 카메라](https://github.com/user-attachments/assets/e8f4bcb4-8c21-4b1e-82a9-acdf85c32aa7)
-3. 모바일 결과![7  모바일 결과](https://github.com/user-attachments/assets/bf9bb24e-9deb-435e-b37a-2da78c23c8b1)
-4. 모바일 결과 2![8  모바일 결과 2](https://github.com/user-attachments/assets/17b679f4-e7ff-42f1-9d3d-e9ce3e2088b2)
+1. 모바일 첫 화면
+![5  모바일 첫 화면](https://github.com/user-attachments/assets/d27d1e8a-14f1-4f64-96c6-deb08ebfc5be)
+2. 모바일 카메라
+![6  모바일 카메라](https://github.com/user-attachments/assets/e8f4bcb4-8c21-4b1e-82a9-acdf85c32aa7)
+3. 모바일 결과
+![7  모바일 결과](https://github.com/user-attachments/assets/bf9bb24e-9deb-435e-b37a-2da78c23c8b1)
+4. 모바일 결과 2
+![8  모바일 결과 2](https://github.com/user-attachments/assets/17b679f4-e7ff-42f1-9d3d-e9ce3e2088b2)
 
 
 ## 📚 참고 자료
@@ -161,5 +182,12 @@ Moodify는 반응형 디자인을 채택하여 모바일 환경에서도 완벽�
 ## 🏆 프로젝트 소감
 이 프로젝트는 딥러닝, 음악 API 통합, 실시간 사용자 인터페이스 구현 등 기술적 도전을 포함하며, 창의적 사고를 요구했습니다.  
 Moodify는 감정 분석과 음악 추천을 연결하는 혁신적인 접근을 통해 사용자 경험을 한 단계 발전시킬 가능성을 보여줬습니다. 🎧
+
+---
+
+## 📜 라이선스
+
+이 프로젝트는 [MIT 라이선스](https://opensource.org/licenses/MIT)를 따릅니다.  
+자세한 내용은 `LICENSE` 파일을 참조하세요.
 
 ---
