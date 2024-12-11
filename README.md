@@ -1,5 +1,4 @@
-# Moodify 🎵 
-#- Real-Time Emotion Detection & Music Recommendation System
+# Moodify 🎵 - Real-Time Emotion Detection & Music Recommendation System
 
 "Moodify"는 사용자의 감정(Mood)을 분석하고, 그에 맞는 음악이나 플레이리스트를 추천하는 시스템입니다.  
 이름은 "Mood"와 "-ify"의 결합으로, 감정을 음악으로 변환한다는 의미를 담고 있습니다.  
