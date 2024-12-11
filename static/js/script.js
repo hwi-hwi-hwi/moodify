@@ -92,7 +92,7 @@ const frequencyChart = new Chart(ctxFrequency, {
 socket.on("emotion_update", (data) => {
     const liveEmotionDisplay = document.getElementById("live-emotion-display");
     liveEmotionDisplay.style.display = "block";
-    liveEmotionDisplay.innerText = `Live Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+    liveEmotionDisplay.innerText = `Real-Time Detected Emotion: ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
 
     if (emotionColors[data.emotion]) {
         document.body.style.backgroundColor = emotionColors[data.emotion];
@@ -112,32 +112,21 @@ socket.on("emotion_update", (data) => {
 socket.on("final_emotion", (data) => {
     const finalResultDisplay = document.getElementById("final-result");
     finalResultDisplay.style.display = "block";
-    finalResultDisplay.innerHTML = `<strong>Final Emotion:</strong> ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+    finalResultDisplay.innerHTML = `<strong>Final Detected Emotion:</strong> ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
 
-    // 음악 추천 결과 표시
-function fetchMusicRecommendations(emotion) {
-    fetch(`/recommend-music/${emotion}`)
+    fetch(`/recommend-music/${data.emotion}`)
         .then(response => response.json())
         .then(data => {
-            const finalResultDisplay = document.getElementById("final-result");
-            finalResultDisplay.style.display = "block";
-
-            if (data.error) {
-                finalResultDisplay.innerHTML = `<strong>Error:</strong> ${data.error}`;
-            } else {
-                finalResultDisplay.innerHTML = `<strong>Recommended Songs for ${emotion}:</strong><br>`;
+            const playlistRecommendations = document.getElementById("playlist-recommendations");
+            playlistRecommendations.innerHTML = `<h3>Recommended Songs for ${data.emotion}:</h3>`;
+            if (data.tracks) {
                 data.tracks.forEach(track => {
-                    finalResultDisplay.innerHTML += `${track.name} - ${track.artist}<br>`;
+                    playlistRecommendations.innerHTML += `<p>${track.name} - ${track.artist}</p>`;
                 });
+            } else {
+                playlistRecommendations.innerHTML += `<p>No recommendations available.</p>`;
             }
         });
-}
-
-// 감정 분석 결과 수신 시 음악 추천 요청
-socket.on("final_emotion", (data) => {
-    fetchMusicRecommendations(data.emotion);
-});
-
 });
 
 // 감정 분석 시작
