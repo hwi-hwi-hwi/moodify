@@ -1,3 +1,4 @@
+# 사진 받아서...
 from keras.preprocessing.image import img_to_array
 import imutils
 import cv2

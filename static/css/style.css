@@ -57,14 +57,18 @@ footer {
     margin-right: auto;
     display: none;
 }
+/* 플레이리스트 스타일 */
 #playlist-recommendations {
     margin-top: 30px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #e0e0e0;
+    color: #333;
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -79,6 +83,15 @@ button {
 button:hover {
     background-color: #1aa34a;
     transform: scale(1.05);
+}
+
+#togglePlay {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px 30px;
+    font-size: 18px;
 }
 
 /* 애니메이션 */
@@ -118,5 +131,9 @@ button:hover {
     }
     #live-emotion-display, #final-result {
         width: 90%;
+    }
+    #playlist-recommendations {
+        padding: 10px;
+        border-radius: 5px;
     }
 }

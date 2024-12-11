@@ -1,3 +1,4 @@
+# 이미지로 받아서 감정 추출
 import os
 import cv2
 import numpy as np

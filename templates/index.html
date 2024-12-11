@@ -10,6 +10,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Socket.IO -->
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <!-- Spotify Web Playback SDK -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </head>
 <body>
     <header>
@@ -25,7 +27,8 @@
             <canvas id="confidence-chart"></canvas>
             <canvas id="frequency-chart"></canvas>
         </div>
-        <div id="playlist-recommendations"></div> <!-- 음악 추천 결과 -->
+        <div id="playlist-recommendations" style="display:none;"></div><!-- 음악 추천 결과 -->
+        <button id="togglePlay" style="display:none;">Play Recommended Songs</button><!-- 음악 재생 버튼 -->
     </main>
     <footer>
         <p>&copy; 2024 Moodify Project by Seonghwi Kim</p>

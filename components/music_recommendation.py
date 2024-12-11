@@ -8,13 +8,13 @@ spotify = Spotify(auth_manager=auth_manager)
 
 # 감정별 플레이리스트 매핑
 emotion_to_playlist = {
-    "happy": "7nAQSpFAhpq5TghMaz1fOc",   # 유효한 Happy 플레이리스트 ID
-    "sad": "0W71HrCQ3QGQpqTL0esbfo",     # 유효한 Sad 플레이리스트 ID
-    "angry": "00RSVMgoMRNEcWY9Nijoxs",   # 유효한 Angry 플레이리스트 ID
-    "disgust": "4RpQWv15MLxNMrutUpgMLr", # 유효한 Disgust 플레이리스트 ID
-    "scared": "4KvDXHNt5mARFoinM77xjk",  # 유효한 Scared 플레이리스트 ID
-    "surprised": "1n1cbbMpDzZYuLveqh6QkY", # 유효한 Surprised 플레이리스트 ID
-    "neutral": "7nXPOjFbqw3tV4eX9HTEoY"  # 유효한 Neutral 플레이리스트 ID
+    "happy": "7nAQSpFAhpq5TghMaz1fOc",
+    "sad": "0W71HrCQ3QGQpqTL0esbfo",
+    "angry": "00RSVMgoMRNEcWY9Nijoxs",
+    "disgust": "4RpQWv15MLxNMrutUpgMLr",
+    "scared": "4KvDXHNt5mARFoinM77xjk",
+    "surprised": "1n1cbbMpDzZYuLveqh6QkY",
+    "neutral": "7nXPOjFbqw3tV4eX9HTEoY"
 }
 
 def get_recommendations(emotion):
