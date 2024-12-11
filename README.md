@@ -138,6 +138,10 @@ Enter를 눌러 다양한 디바이스에서 Moodify의 작동을 확인.
 Moodify는 반응형 디자인을 채택하여 모바일 환경에서도 완벽하게 작동하도록 설계되었습니다.  
 모바일 브라우저에서 감정 분석과 음악 추천 기능을 손쉽게 사용할 수 있습니다.
 
+1. 첫 화면
+![1  첫 화면](https://github.com/user-attachments/assets/ee52c7af-9965-4dee-b5d1-fdd3a9ca6011)
+
+
 ### ✅ 테스트 방법
 1. **[Responsinator](http://www.responsinator.com/)**에 접속.
 2. URL 입력창에 로컬 서버 주소 또는 배포된 프로젝트 주소를 입력.
