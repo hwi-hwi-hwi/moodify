@@ -73,7 +73,7 @@ def create_emotion_model(input_shape=(48, 48, 1), num_classes=7):
 - **데이터 증강**: 이미지 회전, 이동, 확대, 뒤집기 적용합니다.
 - **클래스 불균형 처리**: `class_weight` 매개변수 사용합니다.
 - **평가 및 분석**:
-  - Confusion Matrix와 Classification Report로 각 감정 클래스에 대한 예측 정확도를 평가합니다다.
+  - Confusion Matrix와 Classification Report로 각 감정 클래스에 대한 예측 정확도를 평가합니다.
   - 아래 그래프는 모델 학습 동안의 훈련 정확도와 손실, 검증 정확도와 손실을 시각적으로 나타냅니다.
 
 #### 모델 학습 성능 그래프:
