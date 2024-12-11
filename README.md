@@ -140,15 +140,18 @@ Moodify는 반응형 디자인을 채택하여 모바일 환경에서도 완벽�
 
 1. 첫 화면
 ![1  첫 화면](https://github.com/user-attachments/assets/ee52c7af-9965-4dee-b5d1-fdd3a9ca6011)
+2. 카메라![2  qjxms snfmaus](https://github.com/user-attachments/assets/0e3c77a2-6bf6-4acf-b6ff-7f1913b5b356)
+3. 카메라 보기![3, 카메라 보기](https://github.com/user-attachments/assets/bc2ba445-76c0-4328-a615-d2659259ea2f)
+4. 결과 분석 및 노래 추천 그리고 노래 재생![4  결과 분석 및 노래 추천 그리고 노래 재생](https://github.com/user-attachments/assets/8d51765f-1c44-4443-af64-eae4cb30a406)
 
+## 📱 모바일 환경 지원
+Moodify는 반응형 디자인을 채택하여 모바일 환경에서도 완벽하게 작동하도록 설계되었습니다.  
+모바일 브라우저에서 감정 분석과 음악 추천 기능을 손쉽게 사용할 수 있습니다.
+1. 모바일 첫 화면![5  모바일 첫 화면](https://github.com/user-attachments/assets/d27d1e8a-14f1-4f64-96c6-deb08ebfc5be)
+2. 모바일 카메라![6  모바일 카메라](https://github.com/user-attachments/assets/e8f4bcb4-8c21-4b1e-82a9-acdf85c32aa7)
+3. 모바일 결과![7  모바일 결과](https://github.com/user-attachments/assets/bf9bb24e-9deb-435e-b37a-2da78c23c8b1)
+4. 모바일 결과 2![8  모바일 결과 2](https://github.com/user-attachments/assets/17b679f4-e7ff-42f1-9d3d-e9ce3e2088b2)
 
-### ✅ 테스트 방법
-1. **[Responsinator](http://www.responsinator.com/)**에 접속.
-2. URL 입력창에 로컬 서버 주소 또는 배포된 프로젝트 주소를 입력.
-   - `http://127.0.0.1:5000`
-3. **Enter**를 눌러 다양한 디바이스에서 Moodify의 작동을 확인.
-
----
 
 ## 📚 참고 자료
 - [FER2013 Dataset](https://www.kaggle.com/datasets/msambare/fer2013)
