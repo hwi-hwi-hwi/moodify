@@ -113,6 +113,31 @@ socket.on("final_emotion", (data) => {
     const finalResultDisplay = document.getElementById("final-result");
     finalResultDisplay.style.display = "block";
     finalResultDisplay.innerHTML = `<strong>Final Emotion:</strong> ${data.emotion}, Confidence: ${(data.confidence * 100).toFixed(2)}%`;
+
+    // 음악 추천 결과 표시
+function fetchMusicRecommendations(emotion) {
+    fetch(`/recommend-music/${emotion}`)
+        .then(response => response.json())
+        .then(data => {
+            const finalResultDisplay = document.getElementById("final-result");
+            finalResultDisplay.style.display = "block";
+
+            if (data.error) {
+                finalResultDisplay.innerHTML = `<strong>Error:</strong> ${data.error}`;
+            } else {
+                finalResultDisplay.innerHTML = `<strong>Recommended Songs for ${emotion}:</strong><br>`;
+                data.tracks.forEach(track => {
+                    finalResultDisplay.innerHTML += `${track.name} - ${track.artist}<br>`;
+                });
+            }
+        });
+}
+
+// 감정 분석 결과 수신 시 음악 추천 요청
+socket.on("final_emotion", (data) => {
+    fetchMusicRecommendations(data.emotion);
+});
+
 });
 
 // 감정 분석 시작

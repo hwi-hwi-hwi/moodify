@@ -1,8 +1,10 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+from flask import jsonify
 from threading import Thread, Event
 from components.face_detection_live import detect_emotion_live
 from utils.data_loader import load_fer2013_data  # 데이터 로드 함수
+from components.music_recommendation import get_recommendations
 import os
 
 app = Flask(__name__)
@@ -24,6 +26,16 @@ thread_stop_event = Event()
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/recommend-music/<emotion>", methods=["GET"])
+def recommend_music(emotion):
+    """
+    감정에 따라 추천 음악 반환
+    """
+    recommendations = get_recommendations(emotion)
+    if "error" in recommendations:
+        return jsonify(recommendations), 400  # 에러가 있으면 400 Bad Request 반환
+    return jsonify(recommendations)
 
 # WebSocket 이벤트 핸들러
 @socketio.on("start_detection")
