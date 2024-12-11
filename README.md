@@ -24,13 +24,56 @@ Moodify는 실시간 감정 분석과 음악 추천을 결합한 창의적인 �
 - 추천 창의 배경색은 최종 감정의 그래프 색상과 동기화되어 시각적 일관성을 제공합니다.
 
 ### 3. Spotify 연동
-- Spotify Web Playback SDK합니다.
-- Dropout 비율 0.3으로 과적합을 방지합니다.
+- Spotify Web Playback SDK를 사용해 플레이리스트를 직접 가져옵니다.
+- Spotify Web API를 통한 OAuth 2.0 인증으로 데이터 연동합니다.
 
+### 4. 사용자 친화적인 인터페이스
+- 반응형 디자인을 통해 모바일 및 데스크톱 환경 모두 지원합니다.
+- 간단하고 직관적인 UI로 사용자 경험 최적화합나다.
+
+---
+
+## 🛠️ 기술 스택 및 도구
+
+- **프로그래밍 언어**: Python, JavaScript
+- **프론트엔드**: HTML, CSS, Chart.js
+- **백엔드**: Flask
+- **라이브러리 및 프레임워크**: OpenCV, TensorFlow, Spotify Web Playback SDK
+- **데이터셋**: FER2013 (감정 인식을 위해 사전 학습된 CNN 모델 사용)
+
+---
+## 🎯 프로젝트 개발 과정
+
+### 1️⃣ 데이터 준비 및 모델 학습
+
+#### 데이터셋: FER2013
+- 7개 감정 클래스로 구성된 35,887개의 이미지.
+
+#### 모델 설계: CNN 기반 감정 인식 모델
+- 3개의 합성곱 레이어와 2개의 풀링 레이어, Dense 레이어를 활용합니다.
+- Dropout 비율 0.3으로 과적합 방지합니다.
+- 
 ```python
 # 모델 생성 예제
 from tensorflow.keras.models import Sequential
-from te합니다.
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+
+def create_emotion_model(input_shape=(48, 48, 1), num_classes=7):
+    model = Sequential()
+    model.add(Conv2D(32, kernel_size=(3, 3), padding='same', input_shape=input_shape))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(num_classes, activation='softmax'))
+    return model
+```
+
+#### 학습 및 개선
+- **데이터 증강**: 이미지 회전, 이동, 확대, 뒤집기 적용합니다.
+- **클래스 불균형 처리**: `class_weight` 매개변수 사용합니다.
+- **평가 및 분석**:
+  - Confusion Matrix와 Classification Report로 각 감정 클래스에 대한 예측 정확도를 평가합니다다.
   - 아래 그래프는 모델 학습 동안의 훈련 정확도와 손실, 검증 정확도와 손실을 시각적으로 나타냅니다.
 
 #### 모델 학습 성능 그래프:
